@@ -1,0 +1,1 @@
+# fxrate.fish
