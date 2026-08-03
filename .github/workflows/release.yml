@@ -1,0 +1,41 @@
+name: Create GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
+
+      - name: Extract release notes from CHANGELOG.md
+        id: changelog
+        run: |
+          sed -n "/^## \[${{ env.VERSION }}\]/,/^## \[/{
+            /^## \[${{ env.VERSION }}\]/d                 # remove the version header
+            /^## \[/q                                     # stop at next header
+            p                                             # print everything else
+          }" CHANGELOG.md | sed '/./,$!d;${/^$/d}' > RELEASE_NOTES.md
+
+          echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+          cat RELEASE_NOTES.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.release_notes }}
+          generate_release_notes: false
+          token: ${{ secrets.GH_TOKEN }}
