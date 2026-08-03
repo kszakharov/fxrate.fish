@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Fish
+        run: |
+          sudo add-apt-repository --yes --no-update ppa:fish-shell/release-4
+          sudo apt-get update --quiet
+          sudo apt-get install --yes fish jq
+
+      - name: Install fisher and fishtape
+        shell: fish {0}
+        run: |
+          curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
+          fisher install jorgebucaran/fishtape
+
+      - name: Run tests
+        shell: fish {0}
+        run: fishtape tests/*.fish
