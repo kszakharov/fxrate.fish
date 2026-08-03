@@ -40,7 +40,7 @@ Days with no published rate (weekends, holidays) print a notice:
 
 ```shell
 $ fxrate 2026-08-01
-2026-08-01 -> no data
+USD/CAD: 2026-08-01: no data
 ```
 
 If the API cannot be reached or returns no usable data, an error is printed:
@@ -57,3 +57,13 @@ The command exits with status 1 whenever any error occurs (invalid date, missing
 - `fish`
 - `jq`
 - `curl`
+
+## Testing
+
+Run the test suite with [fishtape](https://github.com/jorgebucaran/fishtape):
+
+```shell
+fishtape tests/*.fish
+```
+
+Tests mock `curl` and require no network access.
