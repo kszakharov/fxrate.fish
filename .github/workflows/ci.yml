@@ -24,6 +24,14 @@ jobs:
           curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source
           fisher install jorgebucaran/fishtape
 
+      - name: Validate Fish syntax
+        shell: fish {0}
+        run: |
+          for file in functions/*.fish tests/*.fish
+            echo "Checking $file"
+            fish --no-execute "$file"
+          end
+
       - name: Run tests
         shell: fish {0}
         run: fishtape tests/*.fish
