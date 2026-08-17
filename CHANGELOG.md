@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.0] - 2026-08-17
+
+### Changed
+
+- No-data output now includes the currency pair label (e.g., `USD/CAD: 2026-08-01: no data`).
+
 ## [0.1.0] - 2026-08-02
 
 ### Added
