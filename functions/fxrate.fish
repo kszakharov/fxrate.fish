@@ -1,4 +1,8 @@
 function fxrate
+    if set -q DEBUG
+        set -f fish_trace 1
+    end
+
     set pair "USDCAD"
     set label "USD/CAD"
     set base_url "https://www.bankofcanada.ca/valet/observations/FX$pair/json"
