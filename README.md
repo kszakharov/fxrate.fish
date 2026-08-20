@@ -16,7 +16,7 @@ fisher install kszakharov/fxrate.fish
 fxrate [DATE ...]
 ```
 
-With no arguments, `fxrate` prints yesterday's rate:
+With no arguments, `fxrate` prints recent rate:
 
 ```shell
 $ fxrate

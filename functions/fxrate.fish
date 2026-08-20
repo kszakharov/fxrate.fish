@@ -8,7 +8,18 @@ function fxrate
     set base_url "https://www.bankofcanada.ca/valet/observations/FX$pair/json"
 
     if test (count $argv) -eq 0
-        set -a argv (date -v-1d "+%Y-%m-%d")
+        set url "$base_url?recent=1"
+        set response (curl -s $url)
+        if test -z "$response"
+            echo "Error: No response from Bank of Canada API"
+            return 1
+        end
+
+        set value (echo $response | jq -r ".observations[0].FX$pair.v")
+        set date  (echo $response | jq -r ".observations[0].d")
+
+        echo "$label: $date: $value"
+        exit 0
     end
 
     for req_date in $argv
