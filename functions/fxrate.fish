@@ -1,15 +1,3 @@
-function _fxrate_iter_dates --argument-names start end
-    set -l cur $start
-    set -l end_num (string replace -a - '' $end)
-    while test (string replace -a '-' '' "$cur") -le $end_num
-        echo $cur
-        # Advance by one day; try macOS/BSD date first, then GNU date.
-        set cur (date -j -v+1d -f "%Y-%m-%d" $cur +%Y-%m-%d 2>/dev/null
-            or date -d "$cur +1 day" +%Y-%m-%d)
-    end
-end
-
-
 function fxrate
     if set -q DEBUG
         set -f fish_trace 1
@@ -61,5 +49,17 @@ function fxrate
 
             echo "$label: $date: $value"
         end
+    end
+end
+
+
+function _fxrate_iter_dates --argument-names start end
+    set -l cur $start
+    set -l end_num (string replace -a - '' $end)
+    while test (string replace -a '-' '' "$cur") -le $end_num
+        echo $cur
+        # Advance by one day; try macOS/BSD date first, then GNU date.
+        set cur (date -j -v+1d -f "%Y-%m-%d" $cur +%Y-%m-%d 2>/dev/null
+            or date -d "$cur +1 day" +%Y-%m-%d)
     end
 end
