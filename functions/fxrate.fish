@@ -30,13 +30,11 @@ function fxrate
             return 1
         end
 
-        set value (echo $response | jq -r ".observations[0].FX$pair.v")
-        set date  (echo $response | jq -r ".observations[0].d")
+        set value (
+            echo $response |
+            jq -r --arg date "$req_date" --arg pair "FX$pair" '(.observations[] | select(.d == $date) | .[$pair].v) // "no data"'
+        )
 
-        if test "$value" = "null" -o -z "$value"
-            echo "$label: $req_date: no data"
-        else
-            echo "$label: $date: $value"
-        end
+        echo "$label: $req_date: $value"
     end
 end
