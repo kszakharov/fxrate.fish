@@ -24,13 +24,33 @@ function fxrate
 
     for arg in $argv
         if string match -qr '^\d{4}-\d{2}-\d{2}$' $arg
+            if not _fxrate_validate_date $arg
+                echo "$label: $arg: invalid date"
+                continue
+            end
+
             set start_date $arg
             set end_date $arg
         else if string match -qr '^\d{4}-\d{2}-\d{2}\.\.\d{4}-\d{2}-\d{2}$' $arg
             set start_date (string split '..' $arg)[1]
             set end_date (string split '..' $arg)[2]
+            if not _fxrate_validate_date $start_date
+                echo "$label: $arg: invalid start date"
+                continue
+            end
+
+            if not _fxrate_validate_date $end_date
+                echo "$label: $arg: invalid end date"
+                continue
+            end
+
+            if test (string replace -a '-' '' $start_date) -gt \
+                    (string replace -a '-' '' $end_date)
+                echo "$label: $arg: start date must not be after end date"
+                continue
+            end
         else
-            echo "Error: Invalid date format. Please use YYYY-MM-DD."
+            echo "$label: $arg: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD"
             return 1
         end
 
@@ -50,6 +70,19 @@ function fxrate
             echo "$label: $date: $value"
         end
     end
+end
+
+
+function _fxrate_validate_date --argument-names date
+    if not string match -qr '^\d{4}-\d{2}-\d{2}$' -- $date
+        return 1
+    end
+
+    # Validate that the date actually exists (e.g. reject 2026-02-30).
+    set -l normalized (date -j -f "%Y-%m-%d" $date +%Y-%m-%d 2>/dev/null
+        or date -d "$date" +%Y-%m-%d 2>/dev/null)
+
+    test "$normalized" = "$date"
 end
 
 

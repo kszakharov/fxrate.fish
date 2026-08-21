@@ -23,4 +23,4 @@ end
 @test "Valid date: 2026-07-30" (fxrate 2026-07-30) = "USD/CAD: 2026-07-30: 1.4014"
 @test "Valid date: 2026-07-31" (fxrate 2026-07-31) = "USD/CAD: 2026-07-31: 1.4029"
 @test "Valid date: 2026-08-01" (fxrate 2026-08-01) = "USD/CAD: 2026-08-01: no data"
-@test "Invalid data: 2026-07-32" (fxrate 2026-07-32) = "USD/CAD: 2026-07-32: no data"
+@test "Invalid date: 2026-07-32" (fxrate 2026-07-32) = "USD/CAD: 2026-07-32: invalid date"
