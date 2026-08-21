@@ -13,7 +13,7 @@ fisher install kszakharov/fxrate.fish
 ## Usage
 
 ```shell
-fxrate [DATE ...]
+fxrate [DATE|START..END ...]
 ```
 
 With no arguments, `fxrate` prints recent rate:
@@ -36,11 +36,32 @@ USD/CAD: 2026-07-30: 1.4014
 USD/CAD: 2026-07-31: 1.4029
 ```
 
+Pass a date range (`YYYY-MM-DD..YYYY-MM-DD`) to query every day in between:
+
+```shell
+$ fxrate 2026-07-30..2026-08-01
+USD/CAD: 2026-07-30: 1.4014
+USD/CAD: 2026-07-31: 1.4029
+USD/CAD: 2026-08-01: no data
+```
+
 Days with no published rate (weekends, holidays) print a notice:
 
 ```shell
 $ fxrate 2026-08-01
 USD/CAD: 2026-08-01: no data
+```
+
+Invalid dates print a notice and are skipped; malformed arguments stop execution:
+
+```shell
+$ fxrate 2026-07-32
+USD/CAD: 2026-07-32: invalid date
+```
+
+```shell
+$ fxrate not-a-date
+USD/CAD: not-a-date: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD
 ```
 
 If the API cannot be reached or returns no usable data, an error is printed:
@@ -50,7 +71,15 @@ $ fxrate
 Error: No response from Bank of Canada API
 ```
 
-The command exits with status 1 whenever any error occurs (invalid date, missing `jq`, unreachable API, unparseable response); when multiple dates are given, the remaining dates are still processed.
+The command exits with status 1 on a malformed argument or an unreachable/unparseable API response. Invalid-but-well-formed dates are skipped and remaining arguments are still processed.
+
+## Debugging
+
+Set `DEBUG` to enable fish command tracing:
+
+```shell
+$ DEBUG=1 fxrate 2026-07-30
+```
 
 ## Requirements
 
