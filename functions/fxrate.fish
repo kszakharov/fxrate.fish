@@ -46,8 +46,9 @@ function fxrate
 
             if test (string replace -a '-' '' $start_date) -gt \
                     (string replace -a '-' '' $end_date)
-                echo "$label: $arg: start date must not be after end date"
-                continue
+                set tmp $start_date
+                set start_date $end_date
+                set end_date $tmp
             end
         else
             echo "$label: $arg: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD"
