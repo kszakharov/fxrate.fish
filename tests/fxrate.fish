@@ -7,6 +7,8 @@ function curl
     set params (string split -m1 '?' -- "$argv[-1]")[2]
 
     switch "$params"
+        case "recent=1"
+            cat "$FIXTURES/response recent.json"
         case "start_date=*&end_date=*"
             set dates (string match -r -g 'start_date=([0-9-]+)&end_date=([0-9-]+)' "$params")
             set start_date $dates[1]
@@ -19,6 +21,8 @@ function curl
 end
 
 @test "sanity: fxrate function exists" (functions -q fxrate) $status -eq 0
+
+@test "no args, valid, has data" (fxrate) = "USD/CAD: 2026-08-21: 1.3760"
 
 @test "single date, valid, has data: 2026-07-30" (fxrate 2026-07-30) = "USD/CAD: 2026-07-30: 1.4014"
 @test "single date, valid, has data: 2026-07-31" (fxrate 2026-07-31) = "USD/CAD: 2026-07-31: 1.4029"
