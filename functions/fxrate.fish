@@ -87,12 +87,23 @@ end
 
 
 function _fxrate_iter_dates --argument-names start end
+    # Detect date flavor for platform-specific syntax.
+    set -l date_flavor
+    if date -v1d >/dev/null 2>&1
+        set date_flavor bsd
+    else
+        set date_flavor gnu
+    end
+
     set -l cur $start
     set -l end_num (string replace -a - '' $end)
+
     while test (string replace -a '-' '' "$cur") -le $end_num
         echo $cur
-        # Advance by one day; try macOS/BSD date first, then GNU date.
-        set cur (date -j -v+1d -f "%Y-%m-%d" $cur +%Y-%m-%d 2>/dev/null
-            or date -d "$cur +1 day" +%Y-%m-%d)
+        if test $date_flavor = bsd
+            set cur (date -j -v+1d -f "%Y-%m-%d" $cur +%Y-%m-%d)
+        else
+            set cur (date -d "$cur +1 day" +%Y-%m-%d)
+        end
     end
 end
