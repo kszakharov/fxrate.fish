@@ -23,6 +23,8 @@ function fxrate
     end
 
     for arg in $argv
+        set -l start_date
+        set -l end_date
         if string match -qr '^\d{4}-\d{2}-\d{2}$' $arg
             if not _fxrate_validate_date $arg
                 echo "$label: $arg: invalid date"
@@ -46,9 +48,10 @@ function fxrate
 
             if test (string replace -a '-' '' $start_date) -gt \
                     (string replace -a '-' '' $end_date)
-                set tmp $start_date
+                set -l tmp $start_date
                 set start_date $end_date
                 set end_date $tmp
+                set -e -l tmp
             end
         else
             echo "$label: $arg: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD"
