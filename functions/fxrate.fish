@@ -19,7 +19,7 @@ function fxrate
         set date  (echo $response | jq -r ".observations[0].d")
 
         echo "$label: $date: $value"
-        exit 0
+        return
     end
 
     for arg in $argv
