@@ -31,6 +31,6 @@ end
 
 @test "date range, valid, single-day range: 2026-07-30..2026-07-30"  (echo (fxrate 2026-07-30..2026-07-30)) = "USD/CAD: 2026-07-30: 1.4014"
 @test "date range, valid, multi-day range: 2026-07-30..2026-07-31"   (echo (fxrate 2026-07-30..2026-07-31)) = "USD/CAD: 2026-07-30: 1.4014 USD/CAD: 2026-07-31: 1.4029"
-@test "date range, valid, reversed: 2026-07-31..2026-07-30" (echo (fxrate 2026-07-31..2026-07-30)) = "USD/CAD: 2026-07-30: 1.4014 USD/CAD: 2026-07-31: 1.4029"
+@test "date range, valid, reversed: 2026-07-31..2026-07-30" (echo (fxrate 2026-07-31..2026-07-30)) = "USD/CAD: 2026-07-31: 1.4029 USD/CAD: 2026-07-30: 1.4014"
 @test "date range, invalid, bad start date: 2026-07-32..2026-07-30"  (echo (fxrate 2026-07-32..2026-07-30)) = "USD/CAD: 2026-07-32..2026-07-30: invalid start date"
 @test "date range, invalid, bad end date: 2026-07-30..2026-07-32"    (echo (fxrate 2026-07-30..2026-07-32)) = "USD/CAD: 2026-07-30..2026-07-32: invalid end date"

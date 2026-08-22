@@ -45,20 +45,22 @@ function fxrate
                 echo "$label: $arg: invalid end date"
                 continue
             end
-
-            if test (string replace -a '-' '' $start_date) -gt \
-                    (string replace -a '-' '' $end_date)
-                set -l tmp $start_date
-                set start_date $end_date
-                set end_date $tmp
-                set -e -l tmp
-            end
         else
             echo "$label: $arg: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD"
             return 1
         end
 
-        set url "$base_url?start_date=$start_date&end_date=$end_date"
+        # Bank of Canada API requires start_date <= end_date; the chronological
+        # query bounds are derived independently of the order dates are printed in.
+        set -l query_start $start_date
+        set -l query_end $end_date
+        if test (string replace -a '-' '' $start_date) -gt \
+                (string replace -a '-' '' $end_date)
+            set query_start $end_date
+            set query_end $start_date
+        end
+
+        set url "$base_url?start_date=$query_start&end_date=$query_end"
         set response (curl -s $url)
         if test -z "$response"
             echo "Error: No response from Bank of Canada API"
@@ -82,7 +84,6 @@ function _fxrate_validate_date --argument-names date
         return 1
     end
 
-    # Validate that the date actually exists (e.g. reject 2026-02-30).
     set -l normalized (date -j -f "%Y-%m-%d" $date +%Y-%m-%d 2>/dev/null
         or date -d "$date" +%Y-%m-%d 2>/dev/null)
 
@@ -90,8 +91,9 @@ function _fxrate_validate_date --argument-names date
 end
 
 
-function _fxrate_iter_dates --argument-names start end
-    # Detect date flavor for platform-specific syntax.
+# Prints every date from $from to $to inclusive: ascending if from < to,
+# descending if from > to, a single date if from == to.
+function _fxrate_iter_dates --argument-names from to
     set -l date_flavor
     if date -v1d >/dev/null 2>&1
         set date_flavor bsd
@@ -99,15 +101,23 @@ function _fxrate_iter_dates --argument-names start end
         set date_flavor gnu
     end
 
-    set -l cur $start
-    set -l end_num (string replace -a - '' $end)
+    set -l to_num (string replace -a '-' '' $to)
+    set -l step "+1"
+    if test (string replace -a '-' '' $from) -gt $to_num
+        set step "-1"
+    end
 
-    while test (string replace -a '-' '' "$cur") -le $end_num
+    set -l cur $from
+    while true
         echo $cur
+        if test (string replace -a '-' '' $cur) -eq $to_num
+            break
+        end
+
         if test $date_flavor = bsd
-            set cur (date -j -v+1d -f "%Y-%m-%d" $cur +%Y-%m-%d)
+            set cur (date -j -v"$step"d -f "%Y-%m-%d" $cur +%Y-%m-%d)
         else
-            set cur (date -d "$cur +1 day" +%Y-%m-%d)
+            set cur (date -d "$cur $step day" +%Y-%m-%d)
         end
     end
 end
