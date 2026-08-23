@@ -1,4 +1,0 @@
-{
-    "message": "Start date contains a value that is not allowed. Expected format is YYYY-MM-DD, e.g. 2001-01-27",
-    "docs": "https://www.bankofcanada.ca/valet/docs#/Series/get_observations__seriesNames___format_"
-}
