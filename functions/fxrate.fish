@@ -3,6 +3,9 @@ function fxrate
         set -f fish_trace 1
     end
 
+    argparse 'skip-no-data' -- $argv
+    or return 1
+
     set pair "USDCAD"
     set label "USD/CAD"
     set base_url "https://www.bankofcanada.ca/valet/observations/FX$pair/json"
@@ -72,6 +75,11 @@ function fxrate
                 echo $response |
                 jq -r --arg date "$date" --arg pair "FX$pair" '(.observations[] | select(.d == $date) | .[$pair].v) // "no data"'
             )
+
+            if set -q _flag_skip_no_data
+                and test "$value" = "no data"
+                continue
+            end
 
             echo "$label: $date: $value"
         end
