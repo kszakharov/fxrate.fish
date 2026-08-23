@@ -13,7 +13,7 @@ fisher install kszakharov/fxrate.fish
 ## Usage
 
 ```shell
-fxrate [DATE|START..END ...]
+fxrate [--skip-no-data] [DATE|START..END ...]
 ```
 
 With no arguments, `fxrate` prints recent rate:
@@ -50,6 +50,14 @@ Days with no published rate (weekends, holidays) print a notice:
 ```shell
 $ fxrate 2026-08-01
 USD/CAD: 2026-08-01: no data
+```
+
+Pass `--skip-no-data` to omit those days entirely instead, e.g. when scanning a range for the last available rate:
+
+```shell
+$ fxrate --skip-no-data 2026-07-30..2026-08-01
+USD/CAD: 2026-07-30: 1.4014
+USD/CAD: 2026-07-31: 1.4029
 ```
 
 Invalid dates print a notice and are skipped; malformed arguments stop execution:
