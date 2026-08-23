@@ -8,12 +8,12 @@ function curl
 
     switch "$params"
         case "recent=1"
-            cat "$FIXTURES/response recent.json"
+            cat "$FIXTURES/recent.json"
         case "start_date=*&end_date=*"
             set dates (string match -r -g 'start_date=([0-9-]+)&end_date=([0-9-]+)' "$params")
             set start_date $dates[1]
             set end_date $dates[2]
-            cat "$FIXTURES/response $start_date - $end_date.json"
+            cat "$FIXTURES/$start_date"_"$end_date.json"
         case *
             echo "Error: Unexpected URL: $url"
             exit 1
