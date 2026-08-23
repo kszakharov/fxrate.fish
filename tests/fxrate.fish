@@ -34,3 +34,8 @@ end
 @test "date range, valid, reversed: 2026-07-31..2026-07-30"         (echo (fxrate 2026-07-31..2026-07-30)) = "USD/CAD: 2026-07-31: 1.4029 USD/CAD: 2026-07-30: 1.4014"
 @test "date range, invalid, bad start date: 2026-07-32..2026-07-30" (echo (fxrate 2026-07-32..2026-07-30)) = "USD/CAD: 2026-07-32..2026-07-30: invalid start date"
 @test "date range, invalid, bad end date: 2026-07-30..2026-07-32"   (echo (fxrate 2026-07-30..2026-07-32)) = "USD/CAD: 2026-07-30..2026-07-32: invalid end date"
+
+@test "flag --skip-no-data, no args, has no effect on recent"                           (echo (fxrate --skip-no-data))                        = "USD/CAD: 2026-07-30: 1.4014"
+@test "flag --skip-no-data, single date, has data: 2026-07-30"                          (echo (fxrate --skip-no-data 2026-07-30))             = "USD/CAD: 2026-07-30: 1.4014"
+@test "flag --skip-no-data, single date, no data is omitted: 2026-08-01"                (echo (fxrate --skip-no-data 2026-08-01))             = ""
+@test "flag --skip-no-data, date range, no-data day is omitted: 2026-07-30..2026-08-01" (echo (fxrate --skip-no-data 2026-07-30..2026-08-01)) = "USD/CAD: 2026-07-30: 1.4014 USD/CAD: 2026-07-31: 1.4029"
