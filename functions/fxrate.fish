@@ -3,12 +3,29 @@ function fxrate
         set -f fish_trace 1
     end
 
-    argparse 'skip-no-data' -- $argv
+    argparse 'pair=+' 'skip-no-data' -- $argv
     or return 1
 
-    set pair "USDCAD"
-    set label "USD/CAD"
-    set base_url "https://www.bankofcanada.ca/valet/observations/FX$pair/json"
+    set -l pairs $_flag_pair
+    if test (count $pairs) -eq 0
+        set pairs USDCAD
+    end
+
+    for pair in $pairs
+        if not string match -qr '^[A-Z]{6}$' -- $pair
+            echo "Error: invalid pair: $pair; please use six-letter currency codes, e.g. EURCAD"
+            return 1
+        end
+    end
+
+    set -l labels
+    for pair in $pairs
+        set -a labels (string replace -r '^([A-Z]{3})([A-Z]{3})$' '$1/$2' -- $pair)
+    end
+
+    set -l series_names (string replace -r '^' 'FX' -- $pairs | string join ',')
+
+    set -l base_url "https://www.bankofcanada.ca/valet/observations/$series_names/json"
 
     if test (count $argv) -eq 0
         set url "$base_url?recent=1"
@@ -18,10 +35,12 @@ function fxrate
             return 1
         end
 
-        set value (echo $response | jq -r ".observations[0].FX$pair.v")
-        set date  (echo $response | jq -r ".observations[0].d")
+        set -l date (echo $response | jq -r ".observations[0].d")
 
-        echo "$label: $date: $value"
+        for i in (seq (count $pairs))
+            set value (echo $response | jq -r --arg key "FX$pairs[$i]" '(.observations[0][$key].v) // "no data"')
+            echo "$labels[$i]: $date: $value"
+        end
         return
     end
 
@@ -30,7 +49,7 @@ function fxrate
         set -l end_date
         if string match -qr '^\d{4}-\d{2}-\d{2}$' $arg
             if not _fxrate_validate_date $arg
-                echo "$label: $arg: invalid date"
+                echo "$labels[1]: $arg: invalid date"
                 continue
             end
 
@@ -40,16 +59,16 @@ function fxrate
             set start_date (string split '..' $arg)[1]
             set end_date (string split '..' $arg)[2]
             if not _fxrate_validate_date $start_date
-                echo "$label: $arg: invalid start date"
+                echo "$labels[1]: $arg: invalid start date"
                 continue
             end
 
             if not _fxrate_validate_date $end_date
-                echo "$label: $arg: invalid end date"
+                echo "$labels[1]: $arg: invalid end date"
                 continue
             end
         else
-            echo "$label: $arg: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD"
+            echo "$labels[1]: $arg: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD"
             return 1
         end
 
@@ -71,17 +90,19 @@ function fxrate
         end
 
         for date in (_fxrate_iter_dates $start_date $end_date)
-            set value (
-                echo $response |
-                jq -r --arg date "$date" --arg pair "FX$pair" '(.observations[] | select(.d == $date) | .[$pair].v) // "no data"'
-            )
+            for i in (seq (count $pairs))
+                set value (
+                    echo $response |
+                    jq -r --arg date "$date" --arg pair "FX$pairs[$i]" '(.observations[] | select(.d == $date) | .[$pair].v) // "no data"'
+                )
 
-            if set -q _flag_skip_no_data
-                and test "$value" = "no data"
-                continue
+                if set -q _flag_skip_no_data
+                    and test "$value" = "no data"
+                    continue
+                end
+
+                echo "$labels[$i]: $date: $value"
             end
-
-            echo "$label: $date: $value"
         end
     end
 end
