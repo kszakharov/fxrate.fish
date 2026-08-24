@@ -3,8 +3,25 @@ function fxrate
         set -f fish_trace 1
     end
 
-    argparse 'pair=+' 'skip-no-data' -- $argv
+    argparse 'pair=+' 'skip-no-data' 'available-pairs' -- $argv
     or return 1
+
+    if set -q _flag_available_pairs
+        set -l response (curl -fsS https://www.bankofcanada.ca/valet/lists/series/json)
+        if test $status -ne 0 -o -z "$response"
+            echo "Error: Unable to retrieve available pairs from Bank of Canada API"
+            return 1
+        end
+
+        echo $response | jq -r '
+            .series
+            | to_entries[]
+            | select(.key | test("^FX[A-Z]{6}$"))
+            | "\(.key | sub("^FX"; "")) - \(.value.description | sub("^Daily average (reciprocal )?exchange rate( — historical series)?: daily value"; "rate"))"
+        '
+
+        return 0
+    end
 
     set -l pairs $_flag_pair
     if test (count $pairs) -eq 0
