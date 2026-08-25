@@ -13,7 +13,7 @@ fisher install kszakharov/fxrate.fish
 ## Usage
 
 ```shell
-fxrate [--skip-no-data] [--pair PAIR ...] [DATE|START..END ...]
+fxrate [--available-pairs] [--skip-no-data] [--pair PAIR ...] [DATE|START..END ...]
 ```
 
 With no arguments, `fxrate` prints recent rate:
@@ -96,6 +96,16 @@ $ fxrate not-a-date
 USD/CAD: not-a-date: invalid date format; please use YYYY-MM-DD or YYYY-MM-DD..YYYY-MM-DD
 ```
 
+Pass `--available-pairs` to list every currency pair the Bank of Canada Valet API publishes rates for, then exit without querying any dates:
+
+```shell
+$ fxrate --available-pairs
+AUDCAD - rate of the Australian dollar expressed in Canadian dollars, for 1 unit of Australian dollar
+BRLCAD - rate of the Brazilian real expressed in Canadian dollars, for 1 unit of Brazilian real
+CADAUD - rate of the Canadian dollar expressed in Australian dollars, for 1 unit of Canadian dollar
+...
+```
+
 If the API cannot be reached or returns no usable data, an error is printed:
 
 ```shell
@@ -103,7 +113,7 @@ $ fxrate
 Error: No response from Bank of Canada API
 ```
 
-The command exits with status 1 on a malformed argument, an invalid `--pair` value, or an unreachable/unparseable API response. Invalid-but-well-formed dates are skipped and remaining arguments are still processed.
+The command exits with status 1 on a malformed argument, an invalid `--pair` value, or an unreachable/unparseable API response. Invalid-but-well-formed dates are skipped and remaining arguments are still processed. `--available-pairs` follows the same rule: status 1 if the API is unreachable, 0 otherwise.
 
 ## Debugging
 
