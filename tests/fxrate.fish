@@ -74,3 +74,60 @@ end
 @test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - US dollar in Canadian dollars"
 @test "flag --available-pairs, lists two pairs: CADUSD and USDCAD" (echo (fxrate --available-pairs | grep -E "^(CADUSD|USDCAD)"))            = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
 @test "flag --available-pairs, ignores date argument"              (echo (fxrate --available-pairs 2026-07-30 | grep -E "^(CADUSD|USDCAD)")) = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
+
+# README-driven tests: each documented `$ fxrate ...` example is executed
+# and its output is checked against the output documented in README.md.
+set README (dirname (status current-filename))/../README.md
+
+@test "sanity: README.md exists" -e $README
+
+# Extract every shell block from README.md
+set -l content (string collect < $README)
+string match -qra '(?s)```shell\n(?<blocks>.*?)\n```' -- $content
+
+for block in $blocks
+    set -l lines (string split \n -- $block)
+
+    if not string match -qr '^\$ fxrate\b' -- $lines[1]
+        continue
+    end
+
+    set -l cmd_args (string trim -- (string replace -r '^\$ fxrate' '' -- $lines[1]))
+    set -l output_lines
+    if test (count $lines) -gt 1
+        set output_lines $lines[2..]
+    end
+
+    set -l desc "README: fxrate $cmd_args"
+    if test -z "$cmd_args"
+        set desc "README: fxrate (no args)"
+    end
+
+    if test (count $output_lines) -eq 0
+        @echo "skipping (no documented output to check): $desc"
+        return
+    end
+
+    for line in $output_lines
+        if string match -q '*...*' -- $line
+            @echo "skipping (truncated sample output): $desc"
+            return
+        end
+    end
+
+    if test (count $output_lines) -eq 1 -a "$output_lines[1]" = "Error: No response from Bank of Canada API"
+        @echo "skipping (needs an unreachable-API mock, see tests/fxrate.fish): $desc"
+        return
+    end
+
+    set -l tokens
+    if test -n "$cmd_args"
+        set tokens (string split ' ' -- $cmd_args)
+        set tokens (string match -rv '^$' -- $tokens)
+    end
+
+    set -l actual_str (string join ' ' -- (fxrate $tokens))
+    set -l expected_str (string join ' ' -- $output_lines)
+
+    @test $desc $actual_str = $expected_str
+end
