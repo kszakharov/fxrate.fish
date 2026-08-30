@@ -1,0 +1,277 @@
+{
+     "terms": {
+          "url": "https://www.bankofcanada.ca/terms/"
+     },
+     "series": {
+          "FXAUDCAD": {
+               "label": "AUD/CAD",
+               "description": "Daily average exchange rate: daily value of the Australian dollar expressed in Canadian dollars, for 1 unit of Australian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXAUDCAD"
+          },
+          "FXBRLCAD": {
+               "label": "BRL/CAD",
+               "description": "Daily average exchange rate: daily value of the Brazilian real expressed in Canadian dollars, for 1 unit of Brazilian real",
+               "link": "https://www.bankofcanada.ca/valet/series/FXBRLCAD"
+          },
+          "FXCADAUD": {
+               "label": "CAD/AUD",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Australian dollars, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADAUD"
+          },
+          "FXCADBRL": {
+               "label": "CAD/BRL",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Brazilian reals, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADBRL"
+          },
+          "FXCADCHF": {
+               "label": "CAD/CHF",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Swiss francs, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADCHF"
+          },
+          "FXCADCNY": {
+               "label": "CAD/CNY",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Chinese renminbi, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADCNY"
+          },
+          "FXCADEUR": {
+               "label": "CAD/EUR",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in euros, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADEUR"
+          },
+          "FXCADGBP": {
+               "label": "CAD/GBP",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in UK pound sterling, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADGBP"
+          },
+          "FXCADHKD": {
+               "label": "CAD/HKD",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Hong Kong dollars, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADHKD"
+          },
+          "FXCADIDR": {
+               "label": "CAD/IDR",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Indonesian rupiah, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADIDR"
+          },
+          "FXCADINR": {
+               "label": "CAD/INR",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Indian rupees, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADINR"
+          },
+          "FXCADJPY": {
+               "label": "CAD/JPY",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Japanese yen, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADJPY"
+          },
+          "FXCADKRW": {
+               "label": "CAD/KRW",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in South Korean won, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADKRW"
+          },
+          "FXCADMXN": {
+               "label": "CAD/MXN",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Mexican pesos, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADMXN"
+          },
+          "FXCADMYR": {
+               "label": "CAD/MYR",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Malaysian ringgit, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADMYR"
+          },
+          "FXCADNOK": {
+               "label": "CAD/NOK",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Norwegian kroner, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADNOK"
+          },
+          "FXCADNZD": {
+               "label": "CAD/NZD",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in New Zealand dollars, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADNZD"
+          },
+          "FXCADPEN": {
+               "label": "CAD/PEN",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Peruvian new sols, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADPEN"
+          },
+          "FXCADPLN": {
+               "label": "CAD/PLN",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Polish zloty, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADPLN"
+          },
+          "FXCADRUB": {
+               "label": "CAD/RUB",
+               "description": "Daily average reciprocal exchange rate — historical series: daily value of the Canadian dollar expressed in Russian rubles, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADRUB"
+          },
+          "FXCADSAR": {
+               "label": "CAD/SAR",
+               "description": "Daily average reciprocal exchange rate — historical series: daily value of the Canadian dollar expressed in Saudi riyals, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADSAR"
+          },
+          "FXCADSEK": {
+               "label": "CAD/SEK",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Swedish kronor, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADSEK"
+          },
+          "FXCADSGD": {
+               "label": "CAD/SGD",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Singapore dollars, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADSGD"
+          },
+          "FXCADTHB": {
+               "label": "CAD/THB",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Thai baht, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADTHB"
+          },
+          "FXCADTRY": {
+               "label": "CAD/TRY",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Turkish lira, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADTRY"
+          },
+          "FXCADTWD": {
+               "label": "CAD/TWD",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in Taiwanese dollars, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADTWD"
+          },
+          "FXCADUSD": {
+               "label": "CAD/USD",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in US dollars, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADUSD"
+          },
+          "FXCADVND": {
+               "label": "CAD/VND",
+               "description": "Daily average reciprocal exchange rate — historical series: daily value of the Canadian dollar expressed in Vietnamese dong, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADVND"
+          },
+          "FXCADZAR": {
+               "label": "CAD/ZAR",
+               "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in South African rand, for 1 unit of Canadian dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCADZAR"
+          },
+          "FXCHFCAD": {
+               "label": "CHF/CAD",
+               "description": "Daily average exchange rate: daily value of the Swiss franc expressed in Canadian dollars, for 1 unit of Swiss franc",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCHFCAD"
+          },
+          "FXCNYCAD": {
+               "label": "CNY/CAD",
+               "description": "Daily average exchange rate: daily value of the Chinese renminbi expressed in Canadian dollars, for 1 unit of Chinese renminbi",
+               "link": "https://www.bankofcanada.ca/valet/series/FXCNYCAD"
+          },
+          "FXEURCAD": {
+               "label": "EUR/CAD",
+               "description": "Daily average exchange rate: daily value of the euro expressed in Canadian dollars, for 1 unit of euro",
+               "link": "https://www.bankofcanada.ca/valet/series/FXEURCAD"
+          },
+          "FXGBPCAD": {
+               "label": "GBP/CAD",
+               "description": "Daily average exchange rate: daily value of the UK pound sterling expressed in Canadian dollars, for 1 unit of pound sterling",
+               "link": "https://www.bankofcanada.ca/valet/series/FXGBPCAD"
+          },
+          "FXHKDCAD": {
+               "label": "HKD/CAD",
+               "description": "Daily average exchange rate: daily value of the Hong Kong dollar expressed in Canadian dollars, for 1 unit of Hong Kong dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXHKDCAD"
+          },
+          "FXIDRCAD": {
+               "label": "IDR/CAD",
+               "description": "Daily average exchange rate: daily value of the Indonesian rupiah expressed in Canadian dollars, for 1 unit of Indonesian rupiah",
+               "link": "https://www.bankofcanada.ca/valet/series/FXIDRCAD"
+          },
+          "FXINRCAD": {
+               "label": "INR/CAD",
+               "description": "Daily average exchange rate: daily value of the Indian rupee expressed in Canadian dollars, for 1 unit of Indian rupee",
+               "link": "https://www.bankofcanada.ca/valet/series/FXINRCAD"
+          },
+          "FXJPYCAD": {
+               "label": "JPY/CAD",
+               "description": "Daily average exchange rate: daily value of the Japanese yen expressed in Canadian dollars, for 1 unit of Japanese yen",
+               "link": "https://www.bankofcanada.ca/valet/series/FXJPYCAD"
+          },
+          "FXKRWCAD": {
+               "label": "KRW/CAD",
+               "description": "Daily average exchange rate: daily value of the South Korean won expressed in Canadian dollars, for 1 unit of South Korean won",
+               "link": "https://www.bankofcanada.ca/valet/series/FXKRWCAD"
+          },
+          "FXMXNCAD": {
+               "label": "MXN/CAD",
+               "description": "Daily average exchange rate: daily value of the Mexican peso expressed in Canadian dollars, for 1 unit of Mexican peso",
+               "link": "https://www.bankofcanada.ca/valet/series/FXMXNCAD"
+          },
+          "FXMYRCAD": {
+               "label": "MYR/CAD",
+               "description": "Daily average exchange rate: daily value of the Malaysian ringgit expressed in Canadian dollars, for 1 unit of Malaysian ringgit",
+               "link": "https://www.bankofcanada.ca/valet/series/FXMYRCAD"
+          },
+          "FXNOKCAD": {
+               "label": "NOK/CAD",
+               "description": "Daily average exchange rate: daily value of the Norwegian krone expressed in Canadian dollars, for 1 unit of Norwegian krone",
+               "link": "https://www.bankofcanada.ca/valet/series/FXNOKCAD"
+          },
+          "FXNZDCAD": {
+               "label": "NZD/CAD",
+               "description": "Daily average exchange rate: daily value of the New Zealand dollar expressed in Canadian dollars, for 1 unit of New Zealand dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXNZDCAD"
+          },
+          "FXPENCAD": {
+               "label": "PEN/CAD",
+               "description": "Daily average exchange rate: daily value of the Peruvian new sol expressed in Canadian dollars, for 1 unit of Peruvian new sol",
+               "link": "https://www.bankofcanada.ca/valet/series/FXPENCAD"
+          },
+          "FXPLNCAD": {
+               "label": "PLN/CAD",
+               "description": "Daily average exchange rate: daily value of the Polish zloty expressed in Canadian dollars, for 1 unit of Polish zloty",
+               "link": "https://www.bankofcanada.ca/valet/series/FXPLNCAD"
+          },
+          "FXRUBCAD": {
+               "label": "RUB/CAD",
+               "description": "Daily average exchange rate — historical series: daily value of the Russian ruble expressed in Canadian dollars, for 1 unit of Russian ruble",
+               "link": "https://www.bankofcanada.ca/valet/series/FXRUBCAD"
+          },
+          "FXSARCAD": {
+               "label": "SAR/CAD",
+               "description": "Daily average exchange rate — historical series: daily value of the Saudi riyal expressed in Canadian dollars, for 1 unit of Saudi riyal",
+               "link": "https://www.bankofcanada.ca/valet/series/FXSARCAD"
+          },
+          "FXSEKCAD": {
+               "label": "SEK/CAD",
+               "description": "Daily average exchange rate: daily value of the Swedish krona expressed in Canadian dollars, for 1 unit of Swedish krona",
+               "link": "https://www.bankofcanada.ca/valet/series/FXSEKCAD"
+          },
+          "FXSGDCAD": {
+               "label": "SGD/CAD",
+               "description": "Daily average exchange rate: daily value of the Singapore dollar expressed in Canadian dollars, for 1 unit of Singapore dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXSGDCAD"
+          },
+          "FXTHBCAD": {
+               "label": "THB/CAD",
+               "description": "Daily average exchange rate: daily value of the Thai baht expressed in Canadian dollars, for 1 unit of Thai baht",
+               "link": "https://www.bankofcanada.ca/valet/series/FXTHBCAD"
+          },
+          "FXTRYCAD": {
+               "label": "TRY/CAD",
+               "description": "Daily average exchange rate: daily value of the Turkish lira expressed in Canadian dollars, for 1 unit of Turkish lira",
+               "link": "https://www.bankofcanada.ca/valet/series/FXTRYCAD"
+          },
+          "FXTWDCAD": {
+               "label": "TWD/CAD",
+               "description": "Daily average exchange rate: daily value of the Taiwanese dollar expressed in Canadian dollars, for 1 unit of Taiwanese dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXTWDCAD"
+          },
+          "FXUSDCAD": {
+               "label": "USD/CAD",
+               "description": "Daily average exchange rate: daily value of the US dollar expressed in Canadian dollars, for 1 unit of US dollar",
+               "link": "https://www.bankofcanada.ca/valet/series/FXUSDCAD"
+          },
+          "FXVNDCAD": {
+               "label": "VND/CAD",
+               "description": "Daily average exchange rate — historical series: daily value of the Vietnamese dong expressed in Canadian dollars, for 1 unit of Vietnamese dong",
+               "link": "https://www.bankofcanada.ca/valet/series/FXVNDCAD"
+          },
+          "FXZARCAD": {
+               "label": "ZAR/CAD",
+               "description": "Daily average exchange rate: daily value of the South African rand expressed in Canadian dollars, for 1 unit of South African rand",
+               "link": "https://www.bankofcanada.ca/valet/series/FXZARCAD"
+          }
+     }
+}

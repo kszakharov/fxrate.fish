@@ -6,17 +6,25 @@ function curl
     set url    (string split -m1 '?' -- "$argv[-1]")[1]
     set params (string split -m1 '?' -- "$argv[-1]")[2]
 
-    set series (string match -r -g '/observations/FX([A-Z,]+)/json' "$url" |
-        string split ',' | string replace -r '^FX' '' | string join '+')
+    switch "$url"
+        case "https://www.bankofcanada.ca/valet/lists/series/json"
+            cat "$FIXTURES/series.json"
+        case "https://www.bankofcanada.ca/valet/observations/FX*/json"
+            set series (string match -r -g '/observations/FX([A-Z,]+)/json' "$url" |
+                string split ',' | string replace -r '^FX' '' | string join '+')
 
-    switch "$params"
-        case "recent=1"
-            cat "$FIXTURES/recent_$series.json"
-        case "start_date=*&end_date=*"
-            set dates (string match -r -g 'start_date=([0-9-]+)&end_date=([0-9-]+)' "$params")
-            set start_date $dates[1]
-            set end_date $dates[2]
-            cat "$FIXTURES/$start_date"_"$end_date"_$series.json
+            switch "$params"
+                case "recent=1"
+                    cat "$FIXTURES/recent_$series.json"
+                case "start_date=*&end_date=*"
+                    set dates (string match -r -g 'start_date=([0-9-]+)&end_date=([0-9-]+)' "$params")
+                    set start_date $dates[1]
+                    set end_date $dates[2]
+                    cat "$FIXTURES/$start_date"_"$end_date"_$series.json
+                case *
+                    echo "Error: Unsupported request: $url?$params"
+                    exit 1
+            end
         case *
             echo "Error: Unexpected URL: $url"
             exit 1
@@ -62,3 +70,7 @@ end
 @test "flag --pair, invalid, wrong length is rejected"    (fxrate --pair EURCA)             = "Error: invalid pair: EURCA; please use six-letter currency codes, e.g. EURCAD"
 @test "flag --pair, invalid, exits 1"                     (fxrate --pair eurgbp >/dev/null) $status -eq 1
 @test "flag --pair, invalid, rejected before any request" (fxrate --pair eurgbp 2026-07-30) = "Error: invalid pair: eurgbp; please use six-letter currency codes, e.g. EURCAD"
+
+@test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - rate of the US dollar expressed in Canadian dollars, for 1 unit of US dollar"
+@test "flag --available-pairs, lists two pairs: CADUSD and USDCAD" (echo (fxrate --available-pairs | grep -E "^(CADUSD|USDCAD)"))            = "CADUSD - rate of the Canadian dollar expressed in US dollars, for 1 unit of Canadian dollar USDCAD - rate of the US dollar expressed in Canadian dollars, for 1 unit of US dollar"
+@test "flag --available-pairs, ignores date argument"              (echo (fxrate --available-pairs 2026-07-30 | grep -E "^(CADUSD|USDCAD)")) = "CADUSD - rate of the Canadian dollar expressed in US dollars, for 1 unit of Canadian dollar USDCAD - rate of the US dollar expressed in Canadian dollars, for 1 unit of US dollar"
