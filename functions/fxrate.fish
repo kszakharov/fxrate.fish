@@ -17,7 +17,18 @@ function fxrate
             .series
             | to_entries[]
             | select(.key | test("^FX[A-Z]{6}$"))
-            | "\(.key | sub("^FX"; "")) - \(.value.description | sub("^Daily average (reciprocal )?exchange rate( — historical series)?: daily value"; "rate"))"
+            | . as $series
+            | (
+                $series.value.description
+                | test("historical series")
+            ) as $historical
+            | (
+                $series.value.description
+                | sub("^Daily average (reciprocal )?exchange rate( — historical series)?: daily value"; "rate")
+            ) as $description
+            | "\($series.key | sub("^FX"; "")) - \($description)\(
+                if $historical then " (historical)" else "" end
+            )"
         '
 
         return 0
