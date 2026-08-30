@@ -44,11 +44,22 @@ function fxrate
         set pairs USDCAD
     end
 
-    for pair in $pairs
+    for i in (seq (count $pairs))
+        set pair (string upper -- $pairs[$i] | string replace / '')
+
+        # Validate pair format
         if not string match -qr '^[A-Z]{6}$' -- $pair
-            echo "Error: invalid pair: $pair; please use six-letter currency codes, e.g. EURCAD"
+            echo "Error: invalid pair: $pairs[$i]; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
             return 1
         end
+
+        # Validate that CAD is either the base or quote currency
+        if not string match -qr '^(CAD[A-Z]{3}|[A-Z]{3}CAD)$' -- $pair
+            echo "Error: unsupported pair: $pairs[$i]; CAD must be the base or quote currency, e.g. USDCAD or CADUSD"
+            return 1
+        end
+
+        set pairs[$i] $pair
     end
 
     set -l labels

@@ -66,10 +66,10 @@ end
 @test "flag --pair, repeated, range prints no data for missing series on a day" (echo (fxrate --pair USDCAD --pair EURCAD 2026-07-30..2026-08-01)) = "USD/CAD: 2026-07-30: 1.4014 EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-31: 1.4029 EUR/CAD: 2026-07-31: 1.6145 USD/CAD: 2026-08-01: no data EUR/CAD: 2026-08-01: no data"
 @test "flag --pair + --skip-no-data, repeated, range omits exactly the no-data lines" (echo (fxrate --skip-no-data --pair USDCAD --pair EURCAD 2026-07-30..2026-08-01)) = "USD/CAD: 2026-07-30: 1.4014 EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-31: 1.4029 EUR/CAD: 2026-07-31: 1.6145"
 
-@test "flag --pair, invalid, lowercase is rejected"       (fxrate --pair eurgbp)            = "Error: invalid pair: eurgbp; please use six-letter currency codes, e.g. EURCAD"
-@test "flag --pair, invalid, wrong length is rejected"    (fxrate --pair EURCA)             = "Error: invalid pair: EURCA; please use six-letter currency codes, e.g. EURCAD"
-@test "flag --pair, invalid, exits 1"                     (fxrate --pair eurgbp >/dev/null) $status -eq 1
-@test "flag --pair, invalid, rejected before any request" (fxrate --pair eurgbp 2026-07-30) = "Error: invalid pair: eurgbp; please use six-letter currency codes, e.g. EURCAD"
+@test "flag --pair, unsupported currency pair is rejected" (fxrate --pair eurgbp)            = "Error: unsupported pair: eurgbp; CAD must be the base or quote currency, e.g. USDCAD or CADUSD"
+@test "flag --pair, invalid, with date"                    (fxrate --pair eurgbp 2026-07-30) = "Error: unsupported pair: eurgbp; CAD must be the base or quote currency, e.g. USDCAD or CADUSD"
+@test "flag --pair, invalid, exits 1"                      (fxrate --pair eurgbp >/dev/null) $status -eq 1
+@test "flag --pair, invalid, wrong length is rejected"     (fxrate --pair EURCA)             = "Error: invalid pair: EURCA; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
 
 @test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - US dollar in Canadian dollars"
 @test "flag --available-pairs, lists two pairs: CADUSD and USDCAD" (echo (fxrate --available-pairs | grep -E "^(CADUSD|USDCAD)"))            = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
