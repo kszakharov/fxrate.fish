@@ -1,6 +1,8 @@
 # fxrate.fish
 
-A [fisher](https://github.com/jorgebucaran/fisher) plugin for fetching daily average exchange rates from the [Bank of Canada Valet API](https://www.bankofcanada.ca/valet/). Supports currency pairs where CAD is either the base or quote currency, e.g. USD/CAD, EUR/CAD, and CAD/USD. Written in fish, requiring only `curl` and `jq`.
+A [fisher](https://github.com/jorgebucaran/fisher) plugin for fetching daily average exchange rates from the [Bank of Canada Valet API](https://www.bankofcanada.ca/valet/).
+Supports currency pairs where CAD is either the base or quote currency, e.g. USD/CAD, EUR/CAD, and CAD/USD.
+Written in fish, requiring only `curl` and `jq`.
 
 ## Install
 
@@ -134,7 +136,9 @@ $ fxrate
 Error: No response from Bank of Canada API
 ```
 
-The command exits with status 1 on a malformed argument, an unsupported `--pair` value, or an unreachable/unparseable API response. Invalid-but-well-formed dates are skipped and remaining arguments are still processed. `--available-pairs` follows the same rule: status 1 if the API is unreachable, 0 otherwise.
+The command exits with status 1 on a malformed argument, an unsupported `--pair` value, or an unreachable/unparseable API response.
+Invalid-but-well-formed dates are skipped and remaining arguments are still processed.
+`--available-pairs` follows the same rule: status 1 if the API is unreachable, 0 otherwise.
 
 ## Debugging
 
