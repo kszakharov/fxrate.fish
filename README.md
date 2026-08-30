@@ -1,6 +1,6 @@
 # fxrate.fish
 
-A [fisher](https://github.com/jorgebucaran/fisher) plugin for fetching daily average exchange rates from the [Bank of Canada Valet API](https://www.bankofcanada.ca/valet/). Any published pair works, e.g. USD/CAD, EUR/CAD, GBP/JPY. Written in fish, requiring only `curl` and `jq`.
+A [fisher](https://github.com/jorgebucaran/fisher) plugin for fetching daily average exchange rates from the [Bank of Canada Valet API](https://www.bankofcanada.ca/valet/). Supports currency pairs where CAD is either the base or quote currency, e.g. USD/CAD, EUR/CAD, and CAD/USD. Written in fish, requiring only `curl` and `jq`.
 
 ## Install
 
@@ -67,6 +67,27 @@ $ fxrate --pair EURCAD
 EUR/CAD: 2026-07-30: 1.6136
 ```
 
+The pair must consist of two three-letter currency codes. `/` is also accepted between the currency codes:
+
+```shell
+$ fxrate --pair EUR/CAD
+EUR/CAD: 2026-07-30: 1.6136
+```
+
+CAD must be either the **base currency** or **quote currency**. Pairs that do not contain CAD are unsupported:
+
+```shell
+$ fxrate --pair EURGBP
+Error: unsupported pair: EURGBP; CAD must be the base or quote currency, e.g. USDCAD or CADUSD
+```
+
+Input is normalized to uppercase before validation, so lowercase currency codes are accepted:
+
+```shell
+$ fxrate --pair eurcad
+EUR/CAD: 2026-07-30: 1.6136
+```
+
 Repeat `--pair` to fetch several pairs in one request; each date prints all pairs together in flag order:
 
 ```shell
@@ -77,11 +98,11 @@ EUR/CAD: 2026-07-31: 1.6145
 USD/CAD: 2026-07-31: 1.4029
 ```
 
-A pair that is not six uppercase letters stops execution before any request is made:
+A pair with an invalid format stops execution before any request is made:
 
 ```shell
-$ fxrate --pair eurgbp
-Error: invalid pair: eurgbp; please use six-letter currency codes, e.g. EURCAD
+$ fxrate --pair EURCA
+Error: invalid pair: EURCA; please use three-letter currency codes, e.g. USDCAD or USD/CAD
 ```
 
 Invalid dates print a notice and are skipped; malformed arguments stop execution:
@@ -113,7 +134,7 @@ $ fxrate
 Error: No response from Bank of Canada API
 ```
 
-The command exits with status 1 on a malformed argument, an invalid `--pair` value, or an unreachable/unparseable API response. Invalid-but-well-formed dates are skipped and remaining arguments are still processed. `--available-pairs` follows the same rule: status 1 if the API is unreachable, 0 otherwise.
+The command exits with status 1 on a malformed argument, an unsupported `--pair` value, or an unreachable/unparseable API response. Invalid-but-well-formed dates are skipped and remaining arguments are still processed. `--available-pairs` follows the same rule: status 1 if the API is unreachable, 0 otherwise.
 
 ## Debugging
 
