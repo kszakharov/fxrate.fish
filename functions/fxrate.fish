@@ -18,16 +18,21 @@ function fxrate
             | to_entries[]
             | select(.key | test("^FX[A-Z]{6}$"))
             | . as $series
-            | (
-                $series.value.description
-                | test("historical series")
-            ) as $historical
-            | (
-                $series.value.description
-                | sub("^Daily average (reciprocal )?exchange rate( — historical series)?: daily value"; "rate")
-            ) as $description
-            | "\($series.key | sub("^FX"; "")) - \($description)\(
-                if $historical then " (historical)" else "" end
+            | ($series.value.description | test("reciprocal exchange rate")) as $reciprocal
+            | ($series.value.description | test("historical series")) as $historical
+            | ($series.value.description
+                | capture("daily value of the (?<from>.+?) expressed in (?<to>.+?),")
+            ) as $currencies
+            | "\(.key | sub("^FX"; "")) - \($currencies.from) in \($currencies.to)\(
+                if $reciprocal or $historical
+                then " (" + (
+                [
+                    if $reciprocal then "reciprocal" else empty end,
+                    if $historical then "historical" else empty end
+                ] | join(", ")
+                ) + ")"
+                else ""
+                end
             )"
         '
 

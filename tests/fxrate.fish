@@ -71,6 +71,6 @@ end
 @test "flag --pair, invalid, exits 1"                     (fxrate --pair eurgbp >/dev/null) $status -eq 1
 @test "flag --pair, invalid, rejected before any request" (fxrate --pair eurgbp 2026-07-30) = "Error: invalid pair: eurgbp; please use six-letter currency codes, e.g. EURCAD"
 
-@test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - rate of the US dollar expressed in Canadian dollars, for 1 unit of US dollar"
-@test "flag --available-pairs, lists two pairs: CADUSD and USDCAD" (echo (fxrate --available-pairs | grep -E "^(CADUSD|USDCAD)"))            = "CADUSD - rate of the Canadian dollar expressed in US dollars, for 1 unit of Canadian dollar USDCAD - rate of the US dollar expressed in Canadian dollars, for 1 unit of US dollar"
-@test "flag --available-pairs, ignores date argument"              (echo (fxrate --available-pairs 2026-07-30 | grep -E "^(CADUSD|USDCAD)")) = "CADUSD - rate of the Canadian dollar expressed in US dollars, for 1 unit of Canadian dollar USDCAD - rate of the US dollar expressed in Canadian dollars, for 1 unit of US dollar"
+@test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - US dollar in Canadian dollars"
+@test "flag --available-pairs, lists two pairs: CADUSD and USDCAD" (echo (fxrate --available-pairs | grep -E "^(CADUSD|USDCAD)"))            = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
+@test "flag --available-pairs, ignores date argument"              (echo (fxrate --available-pairs 2026-07-30 | grep -E "^(CADUSD|USDCAD)")) = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
