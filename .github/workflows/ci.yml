@@ -27,7 +27,7 @@ jobs:
       - name: Validate Fish syntax
         shell: fish {0}
         run: |
-          for file in functions/*.fish tests/*.fish
+          for file in functions/*.fish completions/*.fish tests/*.fish
             echo "Checking $file"
             fish --no-execute "$file"
           end
