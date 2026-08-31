@@ -151,6 +151,10 @@ The command exits with status 1 on a malformed argument, an unsupported `--pair`
 Invalid-but-well-formed dates are skipped and remaining arguments are still processed.
 `--available-pairs` follows the same rule: status 1 if the API is unreachable, 0 otherwise.
 
+## Completions
+
+Fish tab-completion is provided for `fxrate` arguments and flags. Dates are picked in stages: type a year (`2026<Tab>`) to select a month, then a month (`2026-08<Tab>`) to select a day, and Tab on an empty token offers the last two weeks plus recent years. Date ranges cascade the same picker onto the end date (`2026-08-22..<Tab>` → `..2026<Tab>` → `..2026-02<Tab>`). `--pair`, `--skip-no-data`, and `--available-pairs` complete as flags.
+
 ## Debugging
 
 Set `DEBUG` to enable fish command tracing:
