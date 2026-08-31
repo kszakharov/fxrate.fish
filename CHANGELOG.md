@@ -37,3 +37,8 @@ All notable changes to this project will be documented in this file.
 - Defaults to yesterday's rate when no date is provided.
 - Prints a notice for days with no published data (weekends, holidays).
 - Exits with status 1 on API errors.
+
+[0.4.0]: https://github.com/kszakharov/fxrate.fish/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/kszakharov/fxrate.fish/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/kszakharov/fxrate.fish/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/kszakharov/fxrate.fish/releases/tag/v0.1.0
