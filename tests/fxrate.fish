@@ -71,6 +71,15 @@ end
 @test "flag --pair, invalid, exits 1"                      (fxrate --pair eurgbp >/dev/null) $status -eq 1
 @test "flag --pair, invalid, wrong length is rejected"     (fxrate --pair EURCA)             = "Error: invalid pair: EURCA; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
 
+@test "flag --pair, slash notation"                      (fxrate --pair USD/CAD) = "USD/CAD: 2026-07-30: 1.4014"
+@test "flag --pair, slash notation, lowercase"           (fxrate --pair usd/cad) = "USD/CAD: 2026-07-30: 1.4014"
+@test "flag --pair, slash notation, CAD base"            (fxrate --pair CAD/USD) = "CAD/USD: 2026-07-30: 0.7136"
+@test "flag --pair, slash notation, CAD base, lowercase" (fxrate --pair cad/usd) = "CAD/USD: 2026-07-30: 0.7136"
+
+@test "flag --pair, slash notation, invalid position"    (fxrate --pair USD/CAD/) = "Error: invalid pair: USD/CAD/; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
+@test "flag --pair, slash notation, invalid position"    (fxrate --pair /USD/CAD) = "Error: invalid pair: /USD/CAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
+@test "flag --pair, slash in wrong position is rejected" (fxrate --pair US/DCAD)  = "Error: invalid pair: US/DCAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
+
 @test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - US dollar in Canadian dollars"
 @test "flag --available-pairs, lists two pairs: CADUSD and USDCAD" (echo (fxrate --available-pairs | grep -E "^(CADUSD|USDCAD)"))            = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
 @test "flag --available-pairs, ignores date argument"              (echo (fxrate --available-pairs 2026-07-30 | grep -E "^(CADUSD|USDCAD)")) = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"

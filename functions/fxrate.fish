@@ -45,7 +45,11 @@ function fxrate
     end
 
     for i in (seq (count $pairs))
-        set pair (string upper -- $pairs[$i] | string replace / '')
+        set pair (string upper -- $pairs[$i])
+
+        if string match -qr '^[A-Z]{3}/[A-Z]{3}$' -- $pair
+            set pair (string replace / '' -- $pair)
+        end
 
         # Validate pair format
         if not string match -qr '^[A-Z]{6}$' -- $pair

@@ -1,0 +1,23 @@
+{
+    "terms": {
+        "url": "https://www.bankofcanada.ca/terms/"
+    },
+    "seriesDetail": {
+        "FXCADUSD": {
+            "label": "CAD/USD",
+            "description": "Daily average reciprocal exchange rate: daily value of the Canadian dollar expressed in US dollars, for 1 unit of Canadian dollar",
+            "dimension": {
+                "key": "d",
+                "name": "Date"
+            }
+        }
+    },
+    "observations": [
+        {
+            "d": "2026-07-30",
+            "FXCADUSD": {
+                "v": "0.7136"
+            }
+        }
+    ]
+}
