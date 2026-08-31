@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2026-08-30
+
+### Added
+
+- `--skip-no-data` flag to omit lines for dates with no published rate, instead of printing a "no data" notice — e.g. when scanning a range for the last available rate: `fxrate --skip-no-data 2026-07-30..2026-08-01`.
+- `--pair` flag (repeatable) to query currency pairs other than the default USD/CAD, e.g. `fxrate --pair EURCAD`. CAD must be the base or quote currency (e.g. `USDCAD` or `CADUSD`); pairs without CAD are rejected. Input is case-insensitive and a `/` separator is accepted (e.g. `EUR/CAD`). Repeat the flag to query several pairs at once — each date prints all requested pairs together, in the order the flags were given.
+- `--available-pairs` flag to list every currency pair the Bank of Canada Valet API publishes involving CAD, noting which are reciprocal or historical series, then exit without querying any dates.
+
 ## [0.3.0] - 2026-08-22
 
 ### Added
