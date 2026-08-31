@@ -15,8 +15,19 @@ fisher install kszakharov/fxrate.fish
 ## Usage
 
 ```shell
-fxrate [--available-pairs] [--skip-no-data] [--pair PAIR ...] [DATE|START..END ...]
+fxrate [-h] [--available-pairs] [--skip-no-data] [--pair PAIR ...] [DATE|START..END ...]
 ```
+
+### Arguments
+
+| Argument            | Description                                                                                                                                                                                                            |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATE`              | A single date (`YYYY-MM-DD`) to query. Repeatable — pass several to query multiple days, and freely mix with `START..END` ranges.                                                                                      |
+| `START..END`        | A date range (`YYYY-MM-DD..YYYY-MM-DD`) to query every day in between, inclusive. Printed in the order given (ascending or descending). Repeatable — pass several ranges, and freely mix with single `DATE` arguments. |
+| `--pair PAIR`       | FX currency pair to query, e.g. `USDCAD` or `EUR/CAD`. Must contain CAD as either the base or quote currency. Repeatable to fetch several pairs in one request. Defaults to `USDCAD` if omitted.                       |
+| `--skip-no-data`    | Omit days with no published rate (weekends, holidays) instead of printing a "no data" notice.                                                                                                                          |
+| `--available-pairs` | List every currency pair the Bank of Canada Valet API publishes rates for, then exit without querying any dates.                                                                                                       |
+| `-h`, `--help`      | Print usage information and exit.                                                                                                                                                                                      |
 
 With no arguments, `fxrate` prints recent rate:
 

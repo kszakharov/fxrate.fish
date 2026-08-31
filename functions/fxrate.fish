@@ -3,8 +3,13 @@ function fxrate
         set -f fish_trace 1
     end
 
-    argparse 'pair=+' 'skip-no-data' 'available-pairs' -- $argv
+    argparse 'h/help' 'pair=+' 'skip-no-data' 'available-pairs' -- $argv
     or return 1
+
+    if set -q _flag_help
+        _fxrate_print_help
+        return 0
+    end
 
     if set -q _flag_available_pairs
         set -l response (curl -fsS https://www.bankofcanada.ca/valet/lists/series/json)
@@ -153,6 +158,19 @@ function fxrate
             end
         end
     end
+end
+
+
+function _fxrate_print_help
+    echo "Usage: fxrate [-h] [--available-pairs] [--skip-no-data] [--pair PAIR ...] [DATE|START..END ...]"
+    echo
+    echo "Arguments:"
+    echo "  DATE                A single date (YYYY-MM-DD). Repeatable; can be mixed with START..END."
+    echo "  START..END          A date range (YYYY-MM-DD..YYYY-MM-DD), inclusive. Repeatable; can be mixed with DATE."
+    echo "  --pair PAIR         FX pair, e.g. USDCAD or EUR/CAD. CAD must be base or quote. Repeatable. Defaults to USDCAD."
+    echo "  --skip-no-data      Omit days with no published rate instead of printing a notice."
+    echo "  --available-pairs   List every supported currency pair, then exit."
+    echo "  -h, --help          Show this help message and exit."
 end
 
 
