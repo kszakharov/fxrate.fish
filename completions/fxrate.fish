@@ -18,23 +18,23 @@ complete -c fxrate --no-files --erase
 # current token starts with "-", which is exactly the "flag as its own token,
 # never mid-date" behavior, so no -n gating is needed here.
 complete -c fxrate --long-option skip-no-data --description "Omit dates with no published rate from output"
-complete -c fxrate --long-option pair --require-parameter --no-files --description "Currency pair to query, e.g. USDCAD or EUR/CAD (repeatable)"
+complete -c fxrate --long-option pair --require-parameter --no-files --keep-order --description "Currency pair to query, e.g. USDCAD or EUR/CAD (repeatable)" -a '(_fxrate_complete_pairs)'
 complete -c fxrate --long-option available-pairs --description "List available pairs and exit"
 
 # Stage 1: unfinished year token -> months. Token "2026", "2026-", "2026-0",
 # or the same as a range end-token. Candidates end in "-" so fish inserts no
 # space and the next Tab continues to the month's days. Suppressed while typing
 # --pair's currency value, where date candidates don't belong.
-complete -c fxrate --no-files --keep-order --condition "_fxrate_complete_year_stage" -a '(_fxrate_complete_year_months)'
+complete -c fxrate --no-files --keep-order --condition "not _fxrate_complete_pair_value; and _fxrate_complete_year_stage" -a '(_fxrate_complete_year_months)'
 
 # Stage 2: finished month (with optional day prefix) -> that month's days.
 # Token "2026-08", "2026-08-", "2026-08-1", or range end-token. A whole
 # date gets the normal trailing space (finished argument).
-complete -c fxrate --no-files --keep-order --condition "_fxrate_complete_month_stage" -a '(_fxrate_complete_month_days)'
+complete -c fxrate --no-files --keep-order --condition "not _fxrate_complete_pair_value; and _fxrate_complete_month_stage" -a '(_fxrate_complete_month_days)'
 
 # Default bucket: recent days then years. Fires for the empty token,
 # partial years like "202", garbage, and fully-typed dates/ranges.
-complete -c fxrate --no-files --keep-order --condition "not _fxrate_complete_year_stage; and not _fxrate_complete_month_stage" -a '(_fxrate_complete_default)'
+complete -c fxrate --no-files --keep-order --condition "not _fxrate_complete_pair_value; and not _fxrate_complete_year_stage; and not _fxrate_complete_month_stage" -a '(_fxrate_complete_default)'
 
 
 # Splits a token into the range "start-date.." prefix (empty when the token is
@@ -60,6 +60,49 @@ end
 function _fxrate_complete_month_stage
     set -l parts (_fxrate_complete_range_split (commandline -ct))
     string match -qr '^\d{4}-\d{2}(-\d?)?$' -- $parts[2]
+end
+
+# True when the cursor sits in the value position of a --pair argument:
+# a previous --pair token immediately before the current token, or the current
+# token being a --pair=... form. Date-completion stages are mutually exclusive
+# with this gate so typing a year after --pair never offers date candidates.
+function _fxrate_complete_pair_value
+    if string match -qr '^--pair=' -- (commandline -ct)
+        return 0
+    end
+
+    set -l tokens (commandline -opc)
+    if test (count $tokens) -ge 2
+        and string match -q -- --pair $tokens[-1]
+        return 0
+    end
+
+    return 1
+end
+
+# Emits `PAIR<Tab>Description` candidates for --pair's value, drawn from
+# `fxrate --available-pairs` (`PAIR - Description` lines). Only pairs whose
+# code starts with the typed prefix are offered, case-insensitively. fish only
+# invokes this while completing --pair's parameter, so the gate check here is
+# a belt-and-suspenders guard.
+function _fxrate_complete_pairs
+    _fxrate_complete_pair_value
+    or return 1
+
+    set -l prefix (commandline -ct)
+    if string match -qr '^--pair=' -- $prefix
+        set prefix (string replace -r '^--pair=' '' -- $prefix)
+    end
+
+    for line in (fxrate --available-pairs)
+        set -l parts (string split -m1 ' - ' -- $line)
+        if test (count $parts) -lt 2
+            continue
+        end
+        if string match -qi "$prefix*" -- $parts[1]
+            echo -e "$parts[1]\t$parts[2]"
+        end
+    end
 end
 
 function _fxrate_complete_year_months
