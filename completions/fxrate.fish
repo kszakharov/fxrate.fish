@@ -42,13 +42,13 @@ complete -c fxrate --no-files --keep-order --condition "not _fxrate_complete_yea
 # parts on separate lines so a caller reads them as "$parts[1]" / "$parts[2]".
 # Single or double dot both normalize to "..". Parsing the token once here
 # avoids re-running the same regex on every consumer.
-function _fxrate_complete_range_split --argument-names tok
-    if set -l m (string match -r '^(\d{4}-\d{2}-\d{2})(\.\.?)(.*)$' -- $tok)
-        echo "$m[2].."
-        echo $m[4]
+function _fxrate_complete_range_split --argument-names token
+    if set -l range_match (string match -r '^(\d{4}-\d{2}-\d{2})(\.\.?)(.*)$' -- $token)
+        echo "$range_match[2].."
+        echo $range_match[4]
     else
         echo ""
-        echo $tok
+        echo $token
     end
 end
 
@@ -175,8 +175,8 @@ end
 # 2017 is the earliest available year. Year candidates keep a trailing "-"
 # so selecting one continues into the year -> month stage without a space.
 function _fxrate_complete_years
-    for y in (seq (date +%Y) -1 2017)
-        echo -e "$y-"
+    for year in (seq (date +%Y) -1 2017)
+        echo -e "$year-"
     end
 end
 
