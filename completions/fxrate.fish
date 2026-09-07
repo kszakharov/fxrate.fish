@@ -70,26 +70,18 @@ function _fxrate_complete_year_months
 end
 
 function _fxrate_complete_months --argument-names year
-    for month in 01 02 03 04 05 06 07 08 09 10 11 12
-        echo -e "$year-$month-\t"(_fxrate_complete_month_name $month)
-    end
-end
-
-function _fxrate_complete_month_name --argument-names month
-    switch $month
-        case 01; echo January
-        case 02; echo February
-        case 03; echo March
-        case 04; echo April
-        case 05; echo May
-        case 06; echo June
-        case 07; echo July
-        case 08; echo August
-        case 09; echo September
-        case 10; echo October
-        case 11; echo November
-        case 12; echo December
-    end
+    echo -e "$year-01-\tJanuary"
+    echo -e "$year-02-\tFebruary"
+    echo -e "$year-03-\tMarch"
+    echo -e "$year-04-\tApril"
+    echo -e "$year-05-\tMay"
+    echo -e "$year-06-\tJune"
+    echo -e "$year-07-\tJuly"
+    echo -e "$year-08-\tAugust"
+    echo -e "$year-09-\tSeptember"
+    echo -e "$year-10-\tOctober"
+    echo -e "$year-11-\tNovember"
+    echo -e "$year-12-\tDecember"
 end
 
 function _fxrate_complete_month_days
