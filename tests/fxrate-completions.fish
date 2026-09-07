@@ -1,8 +1,8 @@
 #!/usr/bin/env fish
 # Simple fishtape tests for fxrate's tab-completion.
 
+source (dirname (status current-filename))/../functions/fxrate.fish
 source (dirname (status current-filename))/../completions/fxrate.fish
-
 
 @test "offers --pair"            (count (complete -C "fxrate --" | string match -r -- '--pair'))            -eq 1
 @test "offers --skip-no-data"    (count (complete -C "fxrate --" | string match -r -- '--skip-no-data'))    -eq 1
@@ -30,3 +30,13 @@ source (dirname (status current-filename))/../completions/fxrate.fish
 
 @test "a range end-token keeps the start date and drills into months" (count (complete -C "fxrate 2024-01-01..2024-" | string match -r -- '^2024-01-01\.\.2024-01-\t')) -eq 1
 @test "a single dot in a range end-token behaves the same as a double dot" (count (complete -C "fxrate 2024-01-01.2024-" | string match -r -- '^2024-01-01\.\.2024-01-\t')) -eq 1
+
+@test "fxrate --pair empty value offers all pair candidates"    (count (complete -C "fxrate --pair "))     -eq 54
+@test "fxrate --pair US narrows to USDCAD only"                 (count (complete -C "fxrate --pair US"))   -eq 1
+@test "fxrate --pair EUR narrows to EURCAD only"                (count (complete -C "fxrate --pair EUR"))  -eq 1
+@test "fxrate --pair CAD narrows to CADUSD only"                (count (complete -C "fxrate --pair CAD"))  -eq 27
+@test "fxrate --pair=US form works"                             (count (complete -C "fxrate --pair=US"))   -eq 1
+@test "fxrate --pair=US completes to full --pair=USDCAD token"  (complete -C "fxrate --pair=US") = "--pair=USDCAD	US dollar in Canadian dollars"
+@test "fxrate --pair US completes to USDCAD with description"   (complete -C "fxrate --pair US") = "USDCAD	US dollar in Canadian dollars"
+@test "pair candidates carry correct descriptions"              (count (complete -C "fxrate --pair " | string match -r -- '^CADUSD\tCanadian dollar in US dollars \(reciprocal\)$')) -eq 1
+@test "typing a date after --pair offers no date completions"   (count (complete -C "fxrate --pair 2026")) -eq 0
