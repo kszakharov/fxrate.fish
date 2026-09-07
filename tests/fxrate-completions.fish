@@ -8,8 +8,8 @@ source (dirname (status current-filename))/../completions/fxrate.fish
 @test "offers --skip-no-data" (count (complete -C "fxrate --" | string match -r -- '--skip-no-data')) -eq 1
 @test "offers --available-pairs" (count (complete -C "fxrate --" | string match -r -- '--available-pairs')) -eq 1
 
-@test "--sk narrows to --skip-no-data only" (complete -C "fxrate --sk") = "--skip-no-data	Omit dates with no published rate from output"
 @test "--pa narrows to --pair only" (complete -C "fxrate --pa") = "--pair	Currency pair to query, e.g. USDCAD or EUR/CAD (repeatable)"
+@test "--sk narrows to --skip-no-data only" (complete -C "fxrate --sk") = "--skip-no-data	Omit dates with no published rate from output"
 @test "--av narrows to --available-pairs only" (complete -C "fxrate --av") = "--available-pairs	List available pairs and exit"
 
 @test "typing a year drills into all 12 months" (count (complete -C "fxrate 2024-")) -eq 12
