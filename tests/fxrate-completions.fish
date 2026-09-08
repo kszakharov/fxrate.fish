@@ -1,4 +1,4 @@
-# Simple fishtape tests for fxrate's tab-completion.
+# Fishtape tests for fxrate's tab-completions, driven via `complete -C`
 
 source (dirname (status current-filename))/helpers/curl.fish
 source (dirname (status current-filename))/../functions/fxrate.fish
