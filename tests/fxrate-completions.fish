@@ -1,4 +1,3 @@
-#!/usr/bin/env fish
 # Simple fishtape tests for fxrate's tab-completion.
 
 source (dirname (status current-filename))/helpers/curl.fish
