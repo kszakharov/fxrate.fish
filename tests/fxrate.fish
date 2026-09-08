@@ -50,9 +50,14 @@ source (dirname (status current-filename))/../functions/fxrate.fish
 @test "flag --pair, slash notation, invalid position"    (fxrate --pair /USD/CAD) = "Error: invalid pair: /USD/CAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
 @test "flag --pair, slash in wrong position is rejected" (fxrate --pair US/DCAD)  = "Error: invalid pair: US/DCAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
 
+@test "before --available-pairs, cache variable does not exist"    (not set -q _fxrate_cache_available_pairs) $status -eq 0
 @test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - US dollar in Canadian dollars"
 @test "flag --available-pairs, lists two pairs: CADUSD and USDCAD" (echo (fxrate --available-pairs | grep -E "^(CADUSD|USDCAD)"))            = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
 @test "flag --available-pairs, ignores date argument"              (echo (fxrate --available-pairs 2026-07-30 | grep -E "^(CADUSD|USDCAD)")) = "CADUSD - Canadian dollar in US dollars (reciprocal) USDCAD - US dollar in Canadian dollars"
+@test "after --available-pairs, cache variable exists"             (set -q _fxrate_cache_available_pairs) $status -eq 0
+
+@test "flag --clean-cache, clears cache and exits 0"            (fxrate --clean-cache) $status -eq 0
+@test "after --clean-cache, cache variable does not exist"      (not set -q _fxrate_cache_available_pairs) $status -eq 0
 
 # README-driven tests: each documented `$ fxrate ...` example is executed
 # and its output is checked against the output documented in README.md.

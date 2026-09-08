@@ -20,6 +20,7 @@ complete -c fxrate --no-files --erase
 complete -c fxrate --long-option skip-no-data --description "Omit dates with no published rate from output"
 complete -c fxrate --long-option pair --require-parameter --no-files --keep-order --description "Currency pair to query, e.g. USDCAD or EUR/CAD (repeatable)" -a '(_fxrate_complete_pairs)'
 complete -c fxrate --long-option available-pairs --description "List available pairs and exit"
+complete -c fxrate --long-option clean-cache --description "Clear the cached list of available pairs, then exit"
 
 # Stage 1: unfinished year token -> months. Token "2026", "2026-", "2026-0",
 # or the same as a range end-token. Candidates end in "-" so fish inserts no

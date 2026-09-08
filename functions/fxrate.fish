@@ -3,7 +3,7 @@ function fxrate
         set -f fish_trace 1
     end
 
-    argparse 'h/help' 'pair=+' 'skip-no-data' 'available-pairs' -- $argv
+    argparse 'h/help' 'pair=+' 'skip-no-data' 'available-pairs' 'clean-cache' -- $argv
     or return 1
 
     if set -q _flag_help
@@ -12,35 +12,44 @@ function fxrate
     end
 
     if set -q _flag_available_pairs
-        set -l response (curl -fsS https://www.bankofcanada.ca/valet/lists/series/json)
-        if test $status -ne 0 -o -z "$response"
-            echo "Error: Unable to retrieve available pairs from Bank of Canada API"
-            return 1
+        if not set -q _fxrate_cache_available_pairs
+            set -l response (curl -fsS https://www.bankofcanada.ca/valet/lists/series/json)
+            if test $status -ne 0 -o -z "$response"
+                echo "Error: Unable to retrieve available pairs from Bank of Canada API"
+                return 1
+            end
+
+            set -g _fxrate_cache_available_pairs (echo $response | jq -r '
+                .series
+                | to_entries[]
+                | select(.key | test("^FX[A-Z]{6}$"))
+                | . as $series
+                | ($series.value.description | test("reciprocal exchange rate")) as $reciprocal
+                | ($series.value.description | test("historical series")) as $historical
+                | ($series.value.description
+                    | capture("daily value of the (?<from>.+?) expressed in (?<to>.+?),")
+                ) as $currencies
+                | "\(.key | sub("^FX"; "")) - \($currencies.from) in \($currencies.to)\(
+                    if $reciprocal or $historical
+                    then " (" + (
+                    [
+                        if $reciprocal then "reciprocal" else empty end,
+                        if $historical then "historical" else empty end
+                    ] | join(", ")
+                    ) + ")"
+                    else ""
+                    end
+                )"
+            ' | string collect)
         end
 
-        echo $response | jq -r '
-            .series
-            | to_entries[]
-            | select(.key | test("^FX[A-Z]{6}$"))
-            | . as $series
-            | ($series.value.description | test("reciprocal exchange rate")) as $reciprocal
-            | ($series.value.description | test("historical series")) as $historical
-            | ($series.value.description
-                | capture("daily value of the (?<from>.+?) expressed in (?<to>.+?),")
-            ) as $currencies
-            | "\(.key | sub("^FX"; "")) - \($currencies.from) in \($currencies.to)\(
-                if $reciprocal or $historical
-                then " (" + (
-                [
-                    if $reciprocal then "reciprocal" else empty end,
-                    if $historical then "historical" else empty end
-                ] | join(", ")
-                ) + ")"
-                else ""
-                end
-            )"
-        '
+        echo -e "$_fxrate_cache_available_pairs"
 
+        return 0
+    end
+
+    if set -q _flag_clean_cache
+        set -e _fxrate_cache_available_pairs
         return 0
     end
 
@@ -170,6 +179,7 @@ function _fxrate_print_help
     echo "  --pair PAIR         FX pair, e.g. USDCAD or EUR/CAD. CAD must be base or quote. Repeatable. Defaults to USDCAD."
     echo "  --skip-no-data      Omit days with no published rate instead of printing a notice."
     echo "  --available-pairs   List every supported currency pair, then exit."
+    echo "  --clean-cache       Clear the cached list of available pairs, then exit."
     echo "  -h, --help          Show this help message and exit."
 end
 

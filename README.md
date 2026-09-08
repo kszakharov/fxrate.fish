@@ -27,6 +27,7 @@ fxrate [-h] [--available-pairs] [--skip-no-data] [--pair PAIR ...] [DATE|START..
 | `--pair PAIR`       | FX currency pair to query, e.g. `USDCAD` or `EUR/CAD`. Must contain CAD as either the base or quote currency. Repeatable to fetch several pairs in one request. Defaults to `USDCAD` if omitted.                       |
 | `--skip-no-data`    | Omit days with no published rate (weekends, holidays) instead of printing a "no data" notice.                                                                                                                          |
 | `--available-pairs` | List every currency pair the Bank of Canada Valet API publishes rates for, then exit without querying any dates.                                                                                                       |
+| `--clean-cache`     | Clear the cached list of available pairs.                                                                                                                                                                              |
 | `-h`, `--help`      | Print usage information and exit.                                                                                                                                                                                      |
 
 With no arguments, `fxrate` prints recent rate:
