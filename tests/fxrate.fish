@@ -67,7 +67,7 @@ set README (dirname (status current-filename))/../README.md
 
 # Extract every shell block from README.md
 set -l content (string collect < $README)
-set -l blocks (string match -ra '(?s)```shell\n(.*?)\n```' -- $content)
+string match -qra '(?s)```shell\n(?<blocks>.*?)\n```' -- $content
 
 for block in $blocks
     set -l lines (string split \n -- $block)
