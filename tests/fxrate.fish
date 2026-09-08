@@ -31,14 +31,14 @@ source (dirname (status current-filename))/../functions/fxrate.fish
 @test "flag --pair, repeated, respects flag order: EURCAD then USDCAD" (echo (fxrate --pair EURCAD --pair USDCAD 2026-07-30..2026-07-31)) = "EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-30: 1.4014 EUR/CAD: 2026-07-31: 1.6145 USD/CAD: 2026-07-31: 1.4029"
 @test "flag --pair, repeated, respects flag order: USDCAD then EURCAD" (echo (fxrate --pair USDCAD --pair EURCAD 2026-07-30..2026-07-31)) = "USD/CAD: 2026-07-30: 1.4014 EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-31: 1.4029 EUR/CAD: 2026-07-31: 1.6145"
 
-@test "flag --pair, repeated, multi-pair range prints date-major with flag-order pairs" (echo (fxrate --pair EURCAD --pair USDCAD 2026-07-31..2026-07-30)) = "EUR/CAD: 2026-07-31: 1.6145 USD/CAD: 2026-07-31: 1.4029 EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-30: 1.4014"
+@test "flag --pair, repeated, reversed range still prints date-major in flag order" (echo (fxrate --pair EURCAD --pair USDCAD 2026-07-31..2026-07-30)) = "EUR/CAD: 2026-07-31: 1.6145 USD/CAD: 2026-07-31: 1.4029 EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-30: 1.4014"
 
 @test "flag --pair, repeated, range prints no data for missing series on a day" (echo (fxrate --pair USDCAD --pair EURCAD 2026-07-30..2026-08-01)) = "USD/CAD: 2026-07-30: 1.4014 EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-31: 1.4029 EUR/CAD: 2026-07-31: 1.6145 USD/CAD: 2026-08-01: no data EUR/CAD: 2026-08-01: no data"
 @test "flag --pair + --skip-no-data, repeated, range omits exactly the no-data lines" (echo (fxrate --skip-no-data --pair USDCAD --pair EURCAD 2026-07-30..2026-08-01)) = "USD/CAD: 2026-07-30: 1.4014 EUR/CAD: 2026-07-30: 1.6136 USD/CAD: 2026-07-31: 1.4029 EUR/CAD: 2026-07-31: 1.6145"
 
 @test "flag --pair, unsupported currency pair is rejected" (fxrate --pair eurgbp)            = "Error: unsupported pair: eurgbp; CAD must be the base or quote currency, e.g. USDCAD or CADUSD"
-@test "flag --pair, invalid, with date"                    (fxrate --pair eurgbp 2026-07-30) = "Error: unsupported pair: eurgbp; CAD must be the base or quote currency, e.g. USDCAD or CADUSD"
-@test "flag --pair, invalid, exits 1"                      (fxrate --pair eurgbp >/dev/null) $status -eq 1
+@test "flag --pair, unsupported, with date"                (fxrate --pair eurgbp 2026-07-30) = "Error: unsupported pair: eurgbp; CAD must be the base or quote currency, e.g. USDCAD or CADUSD"
+@test "flag --pair, unsupported, exits 1"                  (fxrate --pair eurgbp >/dev/null) $status -eq 1
 @test "flag --pair, invalid, wrong length is rejected"     (fxrate --pair EURCA)             = "Error: invalid pair: EURCA; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
 
 @test "flag --pair, slash notation"                      (fxrate --pair USD/CAD) = "USD/CAD: 2026-07-30: 1.4014"
@@ -46,9 +46,9 @@ source (dirname (status current-filename))/../functions/fxrate.fish
 @test "flag --pair, slash notation, CAD base"            (fxrate --pair CAD/USD) = "CAD/USD: 2026-07-30: 0.7136"
 @test "flag --pair, slash notation, CAD base, lowercase" (fxrate --pair cad/usd) = "CAD/USD: 2026-07-30: 0.7136"
 
-@test "flag --pair, slash notation, invalid position"    (fxrate --pair USD/CAD/) = "Error: invalid pair: USD/CAD/; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
-@test "flag --pair, slash notation, invalid position"    (fxrate --pair /USD/CAD) = "Error: invalid pair: /USD/CAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
-@test "flag --pair, slash in wrong position is rejected" (fxrate --pair US/DCAD)  = "Error: invalid pair: US/DCAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
+@test "flag --pair, slash notation, trailing slash is invalid" (fxrate --pair USD/CAD/) = "Error: invalid pair: USD/CAD/; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
+@test "flag --pair, slash notation, leading slash is invalid"  (fxrate --pair /USD/CAD) = "Error: invalid pair: /USD/CAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
+@test "flag --pair, slash in wrong position is rejected"       (fxrate --pair US/DCAD)  = "Error: invalid pair: US/DCAD; please use three-letter currency codes, e.g. USDCAD or USD/CAD"
 
 @test "before --available-pairs, cache variable does not exist"    (not set -q _fxrate_cache_available_pairs) $status -eq 0
 @test "flag --available-pairs, lists default pair: USDCAD"         (echo (fxrate --available-pairs | grep -E "^USDCAD"))                     = "USDCAD - US dollar in Canadian dollars"
