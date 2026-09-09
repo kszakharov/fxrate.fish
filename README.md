@@ -135,9 +135,9 @@ Pass `--available-pairs` to list every currency pair the Bank of Canada Valet AP
 
 ```shell
 $ fxrate --available-pairs
-AUDCAD - rate of the Australian dollar expressed in Canadian dollars, for 1 unit of Australian dollar
-BRLCAD - rate of the Brazilian real expressed in Canadian dollars, for 1 unit of Brazilian real
-CADAUD - rate of the Canadian dollar expressed in Australian dollars, for 1 unit of Canadian dollar
+AUDCAD - Australian dollar in Canadian dollars
+BRLCAD - Brazilian real in Canadian dollars
+CADAUD - Canadian dollar in Australian dollars (reciprocal)
 ...
 ```
 
