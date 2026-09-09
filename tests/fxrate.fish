@@ -89,19 +89,17 @@ for block in $blocks
 
     if test (count $output_lines) -eq 0
         @echo "skipping (no documented output to check): $desc"
-        return
+        continue
     end
 
-    for line in $output_lines
-        if string match -q '*...*' -- $line
-            @echo "skipping (truncated sample output): $desc"
-            return
-        end
+    if string match -q --regex '^\.\.\.$' -- $output_lines
+        @echo "skipping (truncated sample output): $desc"
+        continue
     end
 
     if test (count $output_lines) -eq 1 -a "$output_lines[1]" = "Error: No response from Bank of Canada API"
         @echo "skipping (needs an unreachable-API mock, see tests/fxrate.fish): $desc"
-        return
+        continue
     end
 
     set -l tokens
