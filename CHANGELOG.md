@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2026-09-08
+
+### Added
+
+- `-h`, `--help` flag to print usage and a summary of all arguments, then exit.
+- Fish tab-completions for `fxrate`'s flags and dates, installed automatically alongside the function via Fisher. `--pair`, `--skip-no-data`, `--available-pairs`, and `--clean-cache` complete as flags; dates complete in stages — a year narrows to its months, and a month narrows to its days — with an empty argument offering a short list of recent dates plus a list of years back to 2017 (the earliest year the Bank of Canada Valet API covers). Date ranges (`START..END`) apply the same picker to the end date, and `--pair` values complete from the same pairs `--available-pairs` lists.
+- `--clean-cache` flag to clear the cached `--available-pairs` response, forcing the next call to re-fetch it from the Bank of Canada API.
+
+### Changed
+
+- `--available-pairs` now caches its response for the rest of the shell session instead of calling the Bank of Canada API on every invocation. Repeated lookups — including the ones tab-completion makes behind the scenes for `--pair` — are instant after the first. Run `fxrate --clean-cache` to force a fresh fetch.
+
 ## [0.4.0] - 2026-08-30
 
 ### Added
@@ -38,6 +50,7 @@ All notable changes to this project will be documented in this file.
 - Prints a notice for days with no published data (weekends, holidays).
 - Exits with status 1 on API errors.
 
+[0.5.0]: https://github.com/kszakharov/fxrate.fish/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/kszakharov/fxrate.fish/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/kszakharov/fxrate.fish/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/kszakharov/fxrate.fish/compare/v0.1.0...v0.2.0
